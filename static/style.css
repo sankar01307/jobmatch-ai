@@ -1,0 +1,45 @@
+:root {
+  --brand: #0f766e;
+  --brand-dark: #115e59;
+  --bg:    #f1f5f9;
+}
+body {
+  background: var(--bg);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.card { border: none; border-radius: 1rem; transition: transform .15s, box-shadow .15s; }
+.card:hover { transform: translateY(-2px); box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.08) !important; }
+.navbar-brand { font-size: 1.2rem; letter-spacing: -.5px; }
+.btn-success { background: var(--brand); border-color: var(--brand); }
+.btn-success:hover { background: var(--brand-dark); border-color: var(--brand-dark); }
+.progress { border-radius: 8px; }
+.badge { font-weight: 500; letter-spacing: .2px; }
+.hero {
+  background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+  color: #fff;
+  border-radius: 1.25rem;
+  padding: 4rem 2rem;
+}
+.hero h1 { font-weight: 800; letter-spacing: -1px; }
+
+/* fade-in on page load */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+main, .container > * { animation: fadeIn .35s ease both; }
+
+/* upload zone hover */
+.upload-zone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 1rem;
+  padding: 2rem;
+  text-align: center;
+  transition: .2s;
+  cursor: pointer;
+}
+.upload-zone:hover { border-color: var(--brand); background: #f0fdfa; }
+
+/* print */
+@media print {
+  .navbar, .btn, form { display: none !important; }
+  body { background: #fff; }
+  .card { box-shadow: none !important; border: 1px solid #e2e8f0 !important; }
+}

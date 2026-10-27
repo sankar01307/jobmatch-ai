@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Users{% endblock %}
+{% block content %}
+<h3 class="mb-4">👥 Job Seekers</h3>
+<div class="card shadow-sm">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-sm align-middle">
+        <thead><tr>
+  <th>Name</th><th>Email</th><th>Resumes</th><th>Applications</th>
+  <th>Status</th><th>Last Login</th><th></th>
+</tr></thead>
+        <tbody>
+          {% for u in users %}
+  <tr>
+    <td class="fw-bold">{{ u.name }}</td>
+    <td>{{ u.email }}</td>
+    <td>{{ u.resume_count }}</td>
+    <td>{{ u.app_count }}</td>
+    <td>
+      {% if u.is_active %}
+        <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle">Active</span>
+      {% else %}
+        <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle">Inactive</span>
+      {% endif %}
+    </td>
+    <td class="text-muted small">{{ u.last_login[:16].replace('T',' ') if u.last_login else '—' }}</td>
+    <td class="text-end text-nowrap">
+      <a href="{{ url_for('admin_user_detail', user_id=u.id) }}" class="btn btn-sm btn-outline-success">View</a>
+      <form method="post" action="{{ url_for('admin_toggle_user', user_id=u.id) }}" class="d-inline">
+        <button class="btn btn-sm {% if u.is_active %}btn-outline-danger{% else %}btn-outline-success{% endif %}">
+          {% if u.is_active %}Deactivate{% else %}Activate{% endif %}
+        </button>
+      </form>
+    </td>
+  </tr>
+{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

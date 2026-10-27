@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<h3 class="mb-4">🛠 Admin Dashboard</h3>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="card shadow-sm text-center"><div class="card-body">
+      <div class="fs-3 fw-bold">{{ stats.users }}</div>
+      <div class="text-muted small">Job Seekers</div>
+    </div></div>
+  </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm text-center"><div class="card-body">
+      <div class="fs-3 fw-bold">{{ stats.jobs }}</div>
+      <div class="text-muted small">Jobs Posted</div>
+    </div></div>
+  </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm text-center"><div class="card-body">
+      <div class="fs-3 fw-bold">{{ stats.applications }}</div>
+      <div class="text-muted small">Applications</div>
+    </div></div>
+  </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm text-center"><div class="card-body">
+      <div class="fs-3 fw-bold text-success">{{ stats.avg_match }}%</div>
+      <div class="text-muted small">Avg. Match Score</div>
+    </div></div>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h5 class="card-title">Recent Applications</h5>
+    {% if recent %}
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-0">
+          <thead><tr><th>Candidate</th><th>Job</th><th>Company</th><th>Match</th><th>Status</th><th>Date</th></tr></thead>
+          <tbody>
+            {% for a in recent %}
+              <tr>
+                <td>{{ a.user_name }}<div class="text-muted small">{{ a.user_email }}</div></td>
+                <td>{{ a.job_title }}</td>
+                <td>{{ a.company }}</td>
+                <td><span class="fw-bold text-success">{{ a.match_score }}%</span></td>
+                <td><span class="badge bg-info text-dark">{{ a.status }}</span></td>
+                <td class="text-muted small">{{ a.applied_at[:19].replace('T',' ') }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="text-muted mb-0">No applications yet.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

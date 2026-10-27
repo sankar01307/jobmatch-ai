@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Manage Jobs{% endblock %}
+{% block content %}
+<h3 class="mb-4">💼 Manage Jobs</h3>
+
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h5 class="card-title">Post a New Job</h5>
+    <form method="post" class="row g-3">
+      <div class="col-md-4"><input name="title" class="form-control" placeholder="Job title" required></div>
+      <div class="col-md-4"><input name="company" class="form-control" placeholder="Company" required></div>
+      <div class="col-md-4"><input name="location" class="form-control" placeholder="Location"></div>
+      <div class="col-12">
+        <textarea name="description" class="form-control" rows="3" placeholder="Job description" required></textarea>
+      </div>
+      <div class="col-12">
+        <input name="required_skills" class="form-control" placeholder="Required skills (comma-separated)">
+      </div>
+      <div class="col-12"><button class="btn btn-success">Post Job</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h5 class="card-title">Posted Jobs ({{ jobs|length }})</h5>
+    <div class="table-responsive">
+      <table class="table table-sm align-middle">
+        <thead><tr><th>Title</th><th>Company</th><th>Location</th><th>Required Skills</th><th>Posted</th><th></th></tr></thead>
+        <tbody>
+          {% for j in jobs %}
+            <tr>
+              <td class="fw-bold">{{ j.title }}</td>
+              <td>{{ j.company }}</td>
+              <td>{{ j.location or '—' }}</td>
+              <td class="small text-muted">{{ j.required_skills or '—' }}</td>
+              <td class="small text-muted">{{ j.created_at[:10] }}</td>
+              <td class="text-end">
+                <form method="post" action="{{ url_for('admin_delete_job', job_id=j.id) }}"
+                      onsubmit="return confirm('Delete this job and its applications?')">
+                  <button class="btn btn-sm btn-outline-danger">Delete</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

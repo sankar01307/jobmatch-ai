@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="p-5 mb-4 bg-white rounded-3 shadow-sm text-center">
+  <h1 class="display-5 fw-bold text-success">JobMatch AI</h1>
+  <p class="lead">AI Resume Analyser &amp; Job Matcher</p>
+  <p class="text-muted">Upload your resume, get instant job-role predictions, match scores, ATS readiness and skill-gap recommendations.</p>
+  <a href="{{ url_for('register') }}" class="btn btn-success btn-lg px-4 me-2">Get Started</a>
+  <a href="{{ url_for('login') }}" class="btn btn-outline-dark btn-lg px-4">Login</a>
+</div>
+
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm"><div class="card-body">
+      <h5 class="card-title">📄 Smart Resume Parsing</h5>
+      <p class="card-text text-muted">Extracts skills, education and experience from PDF, DOCX and TXT resumes.</p>
+    </div></div>
+  </div>
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm"><div class="card-body">
+      <h5 class="card-title">🎯 Semantic Job Matching</h5>
+      <p class="card-text text-muted">TF-IDF / Sentence-BERT based cosine similarity between your resume and each job description.</p>
+    </div></div>
+  </div>
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm"><div class="card-body">
+      <h5 class="card-title">📈 Skill Gap &amp; ATS Score</h5>
+      <p class="card-text text-muted">See missing skills, ATS readiness and what to learn next for each role.</p>
+    </div></div>
+  </div>
+</div>
+{% endblock %}

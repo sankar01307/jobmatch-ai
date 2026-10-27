@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Match Report{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <a href="{{ url_for('seeker_dashboard') }}" class="btn btn-sm btn-outline-secondary">← Back</a>
+  <button onclick="window.print()" class="btn btn-sm btn-dark">🖨 Print</button>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h3>{{ job.title }}</h3>
+    <p class="text-muted mb-3">{{ job.company }} · {{ job.location or '—' }}</p>
+
+    <div class="row text-center mb-4">
+      <div class="col-md-4">
+        <div class="border rounded p-3">
+          <div class="text-muted small">Match Score</div>
+          <div class="fs-2 fw-bold text-success">{{ analysis.match_score }}%</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="border rounded p-3">
+          <div class="text-muted small">Fit Level</div>
+          <div class="fs-4 fw-bold">{{ analysis.fit_level }}</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="border rounded p-3">
+          <div class="text-muted small">ATS Readiness</div>
+          <div class="fs-4 fw-bold">{{ analysis.ats.score }}/100</div>
+        </div>
+      </div>
+    </div>
+
+    <h5>Required Skills</h5>
+    <p>{{ job.required_skills or '—' }}</p>
+
+    <h5>Missing Skills</h5>
+    {% if analysis.missing_skills %}
+      {% for s in analysis.missing_skills %}
+        <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle me-1">{{ s }}</span>
+      {% endfor %}
+    {% else %}
+      <span class="text-success">None — great match! 🎉</span>
+    {% endif %}
+
+    <hr>
+    <h6>Job Description</h6>
+    <p class="text-muted">{{ job.description }}</p>
+  </div>
+</div>
+{% endblock %}

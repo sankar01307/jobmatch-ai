@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Search Jobs{% endblock %}
+{% block content %}
+<a href="{{ url_for('seeker_dashboard') }}" class="btn btn-sm btn-outline-secondary mb-3">← Back</a>
+<h4 class="mb-3">🔎 Search Jobs</h4>
+
+<form class="row g-2 mb-4 p-3 bg-white rounded shadow-sm">
+  <div class="col-md-5">
+    <input name="q" value="{{ q }}" class="form-control" placeholder="Search title, company or skill">
+  </div>
+  <div class="col-md-3">
+    <select name="sort" class="form-select">
+      <option value="match" {% if sort=='match' %}selected{% endif %}>Sort by match</option>
+      <option value="newest" {% if sort=='newest' %}selected{% endif %}>Newest first</option>
+      <option value="title" {% if sort=='title' %}selected{% endif %}>A → Z</option>
+    </select>
+  </div>
+  <div class="col-md-2">
+    <input name="min_score" type="number" min="0" max="99" value="{{ min_score }}"
+           class="form-control" placeholder="Min %">
+  </div>
+  <div class="col-md-2 d-grid">
+    <button class="btn btn-success">Filter</button>
+  </div>
+</form>
+
+{% if not resume %}
+  <div class="alert alert-warning">Upload a resume first to enable matching.</div>
+{% elif results|length == 0 %}
+  <div class="alert alert-info">No jobs match your filters.</div>
+{% else %}
+  {% for r in results %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-body">
+        <div class="d-flex justify-content-between flex-wrap gap-2">
+          <div>
+            <h5 class="mb-1">{{ r.job.title }}</h5>
+            <div class="text-muted small">{{ r.job.company }} · {{ r.job.location or '—' }}</div>
+          </div>
+          <div class="text-end">
+            <span class="badge {% if r.fit_level=='HIGH' %}bg-success{% elif r.fit_level=='MEDIUM' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">
+              {{ r.fit_level }} fit
+            </span>
+            <div class="fw-bold fs-5 text-success">{{ r.match_score }}%</div>
+          </div>
+        </div>
+        <div class="progress my-2" style="height:8px">
+          <div class="progress-bar bg-success" style="width: {{ r.match_score }}%"></div>
+        </div>
+        {% if r.missing_skills %}
+          <div class="small text-muted mb-2">
+            Missing:
+            {% for s in r.missing_skills %}
+              <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle">{{ s }}</span>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <a href="{{ url_for('seeker_report', job_id=r.job.id) }}" class="btn btn-sm btn-outline-dark">📄 View Report</a>
+        <form method="post" action="{{ url_for('apply_job', job_id=r.job.id) }}" class="d-inline">
+          <button class="btn btn-sm btn-success">Apply</button>
+        </form>
+      </div>
+    </div>
+  {% endfor %}
+{% endif %}
+{% endblock %}

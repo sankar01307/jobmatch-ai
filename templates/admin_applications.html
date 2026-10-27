@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Applications{% endblock %}
+{% block content %}
+<h3 class="mb-4">📨 All Applications</h3>
+<div class="card shadow-sm">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-sm align-middle">
+        <thead><tr><th>Candidate</th><th>Job</th><th>Company</th><th>Match</th><th>Status</th><th>Applied</th></tr></thead>
+        <tbody>
+          {% for a in applications %}
+            <tr>
+              <td>{{ a.user_name }}<div class="text-muted small">{{ a.user_email }}</div></td>
+              <td>{{ a.job_title }}</td>
+              <td>{{ a.company }}</td>
+              <td><span class="fw-bold text-success">{{ a.match_score }}%</span></td>
+              <td><span class="badge bg-info text-dark">{{ a.status }}</span></td>
+              <td class="small text-muted">{{ a.applied_at[:19].replace('T',' ') }}</td>
+            </tr>
+          {% else %}
+            <tr><td colspan="6" class="text-muted text-center py-3">No applications yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

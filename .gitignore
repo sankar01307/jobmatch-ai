@@ -1,0 +1,9 @@
+venv/
+__pycache__/
+*.pyc
+jobmatch.db
+uploads/*
+!uploads/.gitkeep
+.env
+*.log
+*.sqlite3

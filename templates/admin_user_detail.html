@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{{ user.name }}{% endblock %}
+{% block content %}
+<a href="{{ url_for('admin_users') }}" class="btn btn-sm btn-outline-secondary mb-3">← Back to Users</a>
+<h3 class="mb-1">{{ user.name }}</h3>
+<p class="text-muted">{{ user.email }} · joined {{ user.created_at[:10] }}</p>
+
+<h5 class="mt-4">Resumes ({{ resumes|length }})</h5>
+{% for r in resumes %}
+  <div class="card shadow-sm mb-2"><div class="card-body">
+    <div class="d-flex justify-content-between">
+      <strong>{{ r.filename.split('_', 2)[-1] }}</strong>
+      <span class="text-muted small">{{ r.uploaded_at[:19].replace('T',' ') }}</span>
+    </div>
+    <div class="mt-2">
+      {% for s in r.skills.split(',') if s %}
+        <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle me-1 mb-1">{{ s }}</span>
+      {% endfor %}
+    </div>
+  </div></div>
+{% else %}
+  <p class="text-muted">No resumes uploaded.</p>
+{% endfor %}
+
+<h5 class="mt-4">Applications ({{ apps|length }})</h5>
+{% if apps %}
+  <div class="table-responsive">
+    <table class="table table-sm">
+      <thead><tr><th>Job</th><th>Company</th><th>Match</th><th>Status</th><th>Applied</th></tr></thead>
+      <tbody>
+        {% for a in apps %}
+          <tr>
+            <td>{{ a.title }}</td>
+            <td>{{ a.company }}</td>
+            <td><span class="fw-bold text-success">{{ a.match_score }}%</span></td>
+            <td>{{ a.status }}</td>
+            <td class="small text-muted">{{ a.applied_at[:10] }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="text-muted">No applications.</p>
+{% endif %}
+{% endblock %}
